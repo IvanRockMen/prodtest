@@ -1,0 +1,29 @@
+version: "3"
+services:
+  api:
+    container_name: "api"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: golang:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    working_dir: /var/www/go
+    networks:
+      - api-network
+    
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - api-network
+    volumes:
+      - ./data:/data/db
+
+networks:
+  api-network:
+    driver: bridge
+    
